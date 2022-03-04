@@ -7,11 +7,8 @@ import {
 	Text,
 	StyleSheet,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
-
 import { ItemWrapper } from './ItemWrapper';
-
-import trashIcon from '../assets/icons/trash/trash.png';
+import { TaskItem } from './TaskItem';
 
 export interface Task {
 	id: number;
@@ -23,7 +20,7 @@ interface TasksListProps {
 	tasks: Task[];
 	toggleTaskDone: (id: number) => void;
 	removeTask: (id: number) => void;
-	editTask: (id: number, newTaskTitle: string) => void;
+	editTask: (id: number, title: string) => void;
 }
 
 export function TasksList({
@@ -41,38 +38,12 @@ export function TasksList({
 			renderItem={({ item, index }) => {
 				return (
 					<ItemWrapper index={index}>
-						<View>
-							<TouchableOpacity
-								testID={`button-${index}`}
-								activeOpacity={0.7}
-								style={styles.taskButton}
-								onPress={() => toggleTaskDone(item.id)}>
-								<View
-									testID={`marker-${index}`}
-									style={item.done ? styles.taskMarkerDone : styles.taskMarker}>
-									{item.done && <Icon name='check' size={12} color='#FFF' />}
-								</View>
-								<Text style={item.done ? styles.taskTextDone : styles.taskText}>
-									{item.title}
-								</Text>
-							</TouchableOpacity>
-						</View>
-						<View style={{ flexDirection: 'row' }}>
-							<TouchableOpacity
-								testID={`trash-${index}`}
-								style={{
-									paddingHorizontal: 5,
-								}}
-								onPress={() => editTask(item.id, item.title)}>
-								<Icon name='edit-3' size={20} style={styles.editButton} />
-							</TouchableOpacity>
-							<TouchableOpacity
-								testID={`trash-${index}`}
-								style={{ paddingHorizontal: 10 }}
-								onPress={() => removeTask(item.id)}>
-								<Image source={trashIcon} />
-							</TouchableOpacity>
-						</View>
+						<TaskItem
+							task={item}
+							index={index}
+							toggleTaskDone={() => toggleTaskDone(item.id)}
+							removeTask={() => removeTask(item.id)}
+							editTask={() => editTask(item.id, item.title)}></TaskItem>
 					</ItemWrapper>
 				);
 			}}
@@ -120,9 +91,5 @@ const styles = StyleSheet.create({
 		color: '#1DB863',
 		textDecorationLine: 'line-through',
 		fontFamily: 'Inter-Medium',
-	},
-	editButton: {
-		justifyContent: 'flex-end',
-		color: '#B2B2B2',
 	},
 });

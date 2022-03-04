@@ -5,11 +5,6 @@ import { Header } from '../components/Header';
 import { Task, TasksList } from '../components/TasksList';
 import { TodoInput } from '../components/TodoInput';
 
-export interface ITask {
-	taskId: number;
-	taskNewTitle: string;
-}
-
 export function Home() {
 	const [tasks, setTasks] = useState<Task[]>([]);
 
@@ -36,17 +31,14 @@ export function Home() {
 		setTasks(list);
 	}
 
-	function handleEditTask(id: number) {
-		const task = tasks.filter((x) => x.id === id);
-		console.log(task[0].title);
-
-		// const editedTaskList: Task[] = tasks.map((task) => {
-		// 	if (task.id === task.taskId) {
-		// 		task.title = task.taskNewTitle;
-		// 	}
-		// 	return task;
-		// });
-		// setTasks(editedTaskList);
+	function handleEditTask(id: number, title: string) {
+		const editedTaskList: Task[] = tasks.map((pTask) => {
+			if (pTask.id === id) {
+				pTask.title = title;
+			}
+			return pTask;
+		});
+		setTasks(editedTaskList);
 	}
 
 	function handleRemoveTask(id: number) {
@@ -56,7 +48,6 @@ export function Home() {
 			[
 				{
 					text: 'Cancel',
-					onPress: () => console.log('Cancelado'),
 					style: 'cancel',
 				},
 				{
